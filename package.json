@@ -1,5 +1,5 @@
 {
-  "name": "tile-memory-test",
+  "name": "chimp-test",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -7,6 +7,10 @@
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
     "check": "svelte-check --tsconfig ./tsconfig.json"
+  },
+	"repository": {
+    "type": "git",
+    "url": "https://github.com/GavHern/chimp-test"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
