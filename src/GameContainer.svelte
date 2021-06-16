@@ -1,18 +1,23 @@
 <script lang="ts">
 	import Tile from './Tile.svelte';
 	import random from './random';
+	import currentNumber from './store';
 
 	const tileAmount = 8 * 6;
-
 	let numberOfShownTiles = 1;
-
 	let flipTiles = false;
 
 	$: randoms = random(tileAmount, numberOfShownTiles + 3) as number[];
 
 	function stageCleared(e) {
-		numberOfShownTiles++;
+		if(e.detail.passed) numberOfShownTiles++;
+		else {
+		  // Recompute random values, but leave the amount of tiles the same
+			randoms = random(tileAmount, numberOfShownTiles + 3);
+		}
+
 		flipTiles = false;
+		currentNumber.set(0);
 	}
 </script>
 
