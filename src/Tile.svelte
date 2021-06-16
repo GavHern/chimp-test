@@ -6,14 +6,18 @@
 
 	const dispatch = createEventDispatcher();
 
-	function passed(): void {
-		setTimeout(() => {dispatch('passed')}, 300);
+	function roundOver(passed): void {
+		setTimeout(() => {
+			dispatch('roundOver', {
+				"passed": passed
+			});
+		}, 300);
 	}
 
 	function clickHandler(e): void {
 		e.target.classList.add('hidden');
 		
-		if(document.querySelectorAll('.tile:not(.hidden)').length === 0) passed();
+		if(document.querySelectorAll('.tile:not(.hidden)').length === 0) roundOver(true);
 		if(!flipped) dispatch('flip');
 	}
 

@@ -2,14 +2,16 @@
 	import Tile from './Tile.svelte';
 	import random from './random';
 
-	let numberCount = 4;
+	const tileAmount = 8 * 6;
+
+	let numberOfShownTiles = 1;
 
 	let flipTiles = false;
 
-	$: randoms = random(48, numberCount) as number[];
+	$: randoms = random(tileAmount, numberOfShownTiles + 3) as number[];
 
-	function stageCleared() {
-		numberCount++;
+	function stageCleared(e) {
+		numberOfShownTiles++;
 		flipTiles = false;
 	}
 </script>
@@ -17,8 +19,13 @@
 <div class="game-container">
 	<!--Key to rerender each tile each time the board rebuilds. This is to prevent a bug where peices would not show up if they randomly get the same poition as the last game-->
 	{#key randoms}
-		{#each Array(48) as box, idx}
-			<Tile index={randoms.indexOf(idx)} on:passed={stageCleared} on:flip={() => {flipTiles = true}} flipped={flipTiles} />
+		{#each Array(tileAmount) as box, idx}
+			<Tile
+				index={randoms.indexOf(idx)}
+				on:roundOver={stageCleared}
+				on:flip={() => {flipTiles = true}}
+				flipped={flipTiles}
+			/>
 		{/each}
 	{/key}
 </div>
