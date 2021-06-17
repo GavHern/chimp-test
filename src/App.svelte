@@ -1,18 +1,24 @@
 <script lang="ts">
 	import GameContainer from './GameContainer.svelte';
+	import { lives } from './store';
 </script>
 
 <h1>Chimp test</h1>
 
 <main>
-	<div class="content">
-		<GameContainer />
-	</div>
+	{#if $lives > 0}
+		<div class="content">
+			<GameContainer />
+		</div>
+	{:else}
+		<h2>You lost!</h2>
+	{/if}
 </main>
 
 <style>
-	:global(html) {
+	:global(html, body) {
 		overflow: hidden;
+		height: 100vh;
 	}
 
 	h1 {
@@ -26,7 +32,7 @@
 	}
 	main {
 		height: 100vh;
-		width: 100hw;
+		width: 100vw;
 		display: grid;
 		place-items: center;
 	}

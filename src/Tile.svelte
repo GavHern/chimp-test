@@ -1,7 +1,8 @@
 <script lang=ts>
 	import { createEventDispatcher } from 'svelte';
 	import { scale } from 'svelte/transition';
-	import currentNumber from './store';
+	import { currentNumber } from './store';
+	import playSound from './audio';
 
 	export let index: number | null;
 	export let flipped: boolean;
@@ -23,6 +24,8 @@
 			return;
 		}
 		
+		playSound('../sounds/correct.ogg', $currentNumber-2);
+
 		// Runs when the stage is cleared
 		if(document.querySelectorAll('.tile-container:not(.hidden)').length === 0) return roundOver(true);
 

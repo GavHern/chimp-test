@@ -1,7 +1,8 @@
 <script lang="ts">
 	import Tile from './Tile.svelte';
 	import random from './random';
-	import currentNumber from './store';
+	import { currentNumber, lives } from './store';
+	import playSound from './audio';
 
 	const tileAmount = 8 * 6;
 	let numberOfShownTiles = 1;
@@ -11,12 +12,16 @@
 	$: randoms = random(tileAmount, numberOfShownTiles + 3) as number[];
 
 	function stageCleared(e) {
+		if(numberOfShownTiles >= 20) return;
 		const { passed } = e.detail;
 		if(!passed) {
+			playSound('../sounds/incorrect.ogg', 0);
+			lives.update(l => --l);
+
 			lost = true;
 			setTimeout(() => {lost = false}, 500)
 		}
-		
+
 		setTimeout(() => {
 			if(e.detail.passed) numberOfShownTiles++;
 			else {
@@ -49,16 +54,27 @@
 	.game-container {
 		--spacing: 0.6rem;
 		--tile-dimensions: 5rem;
+		--rows: 6;
+		--cols: 8;
 		background-image: linear-gradient(0.3turn, #f06292, #ec407a);
 		height: 100%;
 		width: 100%;
 		border-radius: calc(var(--spacing) * 2);
 		display: grid; 
-  	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; 
-  	grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr; 
+  	grid-template-columns: repeat(var(--cols), 1fr); 
+  	grid-template-rows: repeat(var(--rows), 1fr);
   	gap: var(--spacing);
 		padding: calc(var(--spacing) * 1.25);
 		box-shadow: rgba(0, 0, 0, 0.10) 0px 10px 20px, rgba(0, 0, 0, 0.13) 0px 6px 6px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.02) 0px 10px 10px -5px;
+	}
+
+	@media only screen and (max-width: 840px) {
+		.game-container {
+			--rows: 8;
+			--cols: 6;
+			--tile-dimensions: 3.5rem;
+			--spacing: 0.4rem;
+		}
 	}
 
 	.game-container.incorrect {
