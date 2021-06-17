@@ -1,6 +1,7 @@
 <script lang="ts">
 	import GameContainer from './GameContainer.svelte';
 	import { lives } from './store';
+	import { fly, scale } from 'svelte/transition';
 	import LivesCounter from './Lives.svelte';
 
 	function retry() {
@@ -12,11 +13,11 @@
 
 <main>
 	{#if $lives > 0}
-		<div class="content">
+		<div class="content" 	in:scale={{duration: 200, opacity: 0, start: 0.8}}>
 			<GameContainer />
 		</div>
 	{:else}
-		<div class="game-over">
+		<div class="game-over" in:fly={{duration: 500, y: 50,opacity: 0,}}>
 			<h2>You lost!</h2>
 			<button class="retry-button" on:click={retry}>
 				<svg xmlns="http://www.w3.org/2000/svg" class="rety-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -33,11 +34,6 @@
 </div>
 
 <style>
-	:global(html, body) {
-		overflow: hidden;
-		height: 100vh;
-	}
-
 	.title {
 		position: absolute;
 		top: 0;

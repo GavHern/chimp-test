@@ -5,14 +5,14 @@
 	import playSound from './audio';
 
 	const tileAmount = 8 * 6;
-	let numberOfShownTiles = 1;
+	let successfulRounds = 1;
 	let flipTiles = false;
 	let lost = false;
 
-	$: randoms = random(tileAmount, numberOfShownTiles + 3) as number[];
+	$: randoms = random(tileAmount, successfulRounds + 3) as number[];
 
 	function stageCleared(e) {
-		if(numberOfShownTiles >= 20) return;
+		if(successfulRounds >= 20) return;
 		const { passed } = e.detail;
 		if(!passed) {
 			playSound('../sounds/incorrect.ogg', 0);
@@ -23,10 +23,10 @@
 		}
 
 		setTimeout(() => {
-			if(e.detail.passed) numberOfShownTiles++;
+			if(e.detail.passed) successfulRounds++;
 			else {
 				// Recompute random values, but leave the amount of tiles the same
-				randoms = random(tileAmount, numberOfShownTiles + 3);
+				randoms = random(tileAmount, successfulRounds + 3);
 				
 			}
 

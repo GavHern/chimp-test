@@ -50,6 +50,7 @@
 		data-index={index}
 		on:click={clickHandler}
 		in:scale={{duration: 200, delay: 200, opacity: 0.0, start: 0.6}}
+		tabindex={(index === -1) ? -1 : 0}
 	>
 		{#if index !== -1}
 			{index + 1}
