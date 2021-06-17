@@ -9,11 +9,9 @@
 	const dispatch = createEventDispatcher();
 
 	function roundOver(passed): void {
-		setTimeout(() => {
-			dispatch('roundOver', {
-				"passed": passed
-			});
-		}, 300);
+		dispatch('roundOver', {
+			"passed": passed
+		});
 	}
 
 	function clickHandler(e): void {
@@ -68,7 +66,7 @@
 		width: var(--tile-dimensions);
 		background: transparent !important;
 		border-radius: var(--spacing);
-		border: #d81b60 calc(var(--spacing) / 2) solid;
+		border: var(--darken) calc(var(--spacing) / 2) solid;
 		color: #ffffff;
 		font-size: 2.2rem;
 		font-weight: 500;
@@ -86,7 +84,7 @@
 	}
 
 	.tile.flipped {
-		--y-rotation: .5turn;
+		--y-rotation: -.5turn;
 		background: var(--flipped-color) !important;
 		color: transparent;
 		border-color: var(--flipped-color);
@@ -95,7 +93,12 @@
 			background-color 0ms ease 200ms,
 			border-color 0ms ease 200ms,
 			color 0ms ease 200ms,
-			transform 700ms ease;
+			transform 700ms ease,
+			filter 400ms ease;
+	}
+
+	.tile.flipped:hover {
+		filter: brightness(1.1);
 	}
 
 	.tile-container {
@@ -103,6 +106,9 @@
 		opacity: 1;
 		pointer-events: auto;
 		user-select: none;
+
+		/* 3D Flip Effect*/
+		perspective: 20rem;
 
 		transition: opacity 200ms, transform 300ms;
 		transform: scale(var(--scale-amount));

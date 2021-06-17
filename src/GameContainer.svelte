@@ -6,22 +6,32 @@
 	const tileAmount = 8 * 6;
 	let numberOfShownTiles = 1;
 	let flipTiles = false;
+	let lost = false;
 
 	$: randoms = random(tileAmount, numberOfShownTiles + 3) as number[];
 
 	function stageCleared(e) {
-		if(e.detail.passed) numberOfShownTiles++;
-		else {
-		  // Recompute random values, but leave the amount of tiles the same
-			randoms = random(tileAmount, numberOfShownTiles + 3);
+		const { passed } = e.detail;
+		if(!passed) {
+			lost = true;
+			setTimeout(() => {lost = false}, 500)
 		}
+		
+		setTimeout(() => {
+			if(e.detail.passed) numberOfShownTiles++;
+			else {
+				// Recompute random values, but leave the amount of tiles the same
+				randoms = random(tileAmount, numberOfShownTiles + 3);
+				
+			}
 
-		flipTiles = false;
-		currentNumber.set(0);
+			flipTiles = false;
+			currentNumber.set(0);
+		}, 300)
 	}
 </script>
 
-<div class="game-container">
+<div class="game-container" class:incorrect={lost}>
 	<!--Key to rerender each tile each time the board rebuilds. This is to prevent a bug where peices would not show up if they randomly get the same poition as the last game-->
 	{#key randoms}
 		{#each Array(tileAmount) as box, idx}
@@ -49,5 +59,41 @@
   	gap: var(--spacing);
 		padding: calc(var(--spacing) * 1.25);
 		box-shadow: rgba(0, 0, 0, 0.10) 0px 10px 20px, rgba(0, 0, 0, 0.13) 0px 6px 6px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.02) 0px 10px 10px -5px;
+	}
+
+	.game-container.incorrect {
+		animation: shake 0.5s ease-out;
+	}
+
+	@keyframes shake {
+		0% {
+			transform: translateX(0);
+			filter: saturate(1.4);
+		}
+
+		20% {
+			transform: translateX(-10px);
+			filter: saturate(1.4);
+		}
+
+		40% {
+			transform: translateX(10px);
+			filter: saturate(1.32);
+		}
+
+		60% {
+			transform: translateX(-10px);
+			filter: saturate(1.2);
+		}
+
+		80% {
+			transform: translateX(10px);
+			filter: saturate(1.1);
+		}
+
+		100% {
+			transform: translateX(0);
+			filter: saturate(1);
+		}
 	}
 </style>
