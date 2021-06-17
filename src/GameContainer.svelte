@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Tile from './Tile.svelte';
 	import random from './random';
-	import { currentNumber, lives } from './store';
+	import { currentNumber, lives, score } from './store';
 	import playSound from './audio';
 
 	const tileAmount = 8 * 6;
@@ -23,8 +23,10 @@
 		}
 
 		setTimeout(() => {
-			if(e.detail.passed) successfulRounds++;
-			else {
+			if(e.detail.passed) {
+				successfulRounds++
+				score.update(s => ++s);
+			} else {
 				// Recompute random values, but leave the amount of tiles the same
 				randoms = random(tileAmount, successfulRounds + 3);
 				
